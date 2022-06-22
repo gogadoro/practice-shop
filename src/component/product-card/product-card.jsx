@@ -1,18 +1,14 @@
 import Button from '../button/button';
 import './product-card.scss';
 import {useContext} from 'react';
-import { CartDropDownContext } from '../../context/cart-dropdown.context';
+import { CartContext } from '../../context/cart.context';
 
 const ProductCard = ({product}) => {
   const {name,price,imageUrl} = product;
-  const {cartItems, setCartItems} = useContext(CartDropDownContext);
-
-  const goToDropdown = (event) => {
-    console.log(event.target)
-    setCartItems(event.target)
-    console.log('context:', cartItems)
-  }
+  const {addCartToDropdown} = useContext(CartContext);
   
+  const addProdcutToCart = () => addCartToDropdown(product)
+
   return (
     <div className='product-card-container'>
       <img src={imageUrl} alt={`${name}`}/>
@@ -20,7 +16,7 @@ const ProductCard = ({product}) => {
         <span className='name'>{name}</span>
         <span className='price'>{price}</span>
       </div>
-      <Button onClick={goToDropdown} buttonType='inverted'>카트에 담기</Button>
+      <Button onClick={addProdcutToCart} buttonType='inverted'>카트에 담기</Button>
     </div>
   )
 }
