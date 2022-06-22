@@ -1,15 +1,21 @@
 import { initializeApp } from 'firebase/app';
-import { 
-    getAuth, 
+import {
+    getAuth,
     signInWithRedirect,
     signInWithPopup,
-    GoogleAuthProvider } from 'firebase/auth'
+    GoogleAuthProvider,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    signOut,
+    onAuthStateChanged,
+} from 'firebase/auth'
 
 import {
     getFirestore,
     doc,
     getDoc,
-    setDoc, } from 'firebase/firestore';
+    setDoc,
+} from 'firebase/firestore';
 
 const firebaseConfig = {
     apiKey: "AIzaSyCR8wdcaCzNTJHa9yoOST241p3hOOD8Fpo",
@@ -31,13 +37,11 @@ export const signIn_GoogleRedirect = () => signInWithRedirect(auth, GoogleProvid
 
 export const db = getFirestore();
 
-export const setUserDbFromAuth = async (userAuth) => {
-    const userDocRef = doc(db, 'users', userAuth.uid);
-    console.log('docRef :', userDocRef);
+export const setUserDbFromAuth = async (userAuth, additionalInfor={}) => {
+    if (!userAuth) return;
 
+    const userDocRef = doc(db, 'users', userAuth.uid);
     const userSnapshot = await getDoc(userDocRef)
-    console.log('snapshot :', userSnapshot);
-    console.log(userSnapshot.exists());
 
     if (!userSnapshot.exists()) {
         const email = userAuth.email;
@@ -45,11 +49,43 @@ export const setUserDbFromAuth = async (userAuth) => {
         const createdAt = new Date();
 
         try {
-            await setDoc(userDocRef, {email, displayName, createdAt});
+            await setDoc(
+                userDocRef,
+                {
+                    email,
+                    displayName,
+                    createdAt,
+                    ...additionalInfor
+                }
+            );
         } catch (eer) {
             console.log('error creating the user', eer.message);
         }
     }
 
     return userDocRef;
+}
+
+export const createUserAuthWithEmailAndPassword = async (email, password) => {
+    if (!email | !password) {
+        console.log('이메일,암호가 전달되지 않음');
+        return;
+    }
+
+    return await createUserWithEmailAndPassword(auth, email, password);
+}
+
+export const signInUserAuthWithEmailAndPassword = async (email, password) => {
+    if (!email | !password) {
+        console.log('이메일,암호가 전달되지 않음');
+        return;
+    }
+
+    return await signInWithEmailAndPassword(auth, email, password);
+}
+
+export const signOutUser = async() => await signOut(auth);
+
+export const onAuthStateChangedListener = (callback) => {
+    onAuthStateChanged(auth, callback);
 }
