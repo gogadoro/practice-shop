@@ -8,8 +8,9 @@ const CheckOutItem = ({ product }) => {
 
   const increaseHandler = () => goToCart(product)
   const decreaseHandler = () => decreaseCartItem(product)
-  const removeHandler = () => () => removeCartItem(product)
+  const removeHandler = () => removeCartItem(product)
 
+  
   return (
     <div className='checkout-item-container'>
       <div className='image-container'>
@@ -26,7 +27,7 @@ const CheckOutItem = ({ product }) => {
         </div>
       </span>
       <span className='price'>{price}</span>
-      <div className='remove-buttin' onClick={removeHandler}>&#10005;</div>
+      <div className='remove-button' onClick={removeHandler}>&#10005;</div>
     </div>
   )
 }
