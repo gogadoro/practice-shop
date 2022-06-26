@@ -1,8 +1,8 @@
 import {useState} from 'react';
 import {signInUserAuthWithEmailAndPassword} from '../../utils/firebase/firebase';
 import InputForm from '../input-form/input-form';
-import Button from '../button/button';
-import './sign-in-form.scss'
+import Button, {BUTTON_TYPE} from '../button/button';
+import {Div_BtnContainer, Div_SignInContainer} from './sign-in-form.styles.jsx'
 
 
 
@@ -48,8 +48,8 @@ const SignInForm = ({logGoogle}) => {
 
 
   return (
-    <div className='sign-in-container'>
-      <h2>이미 계정이 있으시군요</h2>
+    <Div_SignInContainer>
+      <h2>기존 아이디로 로그인</h2>
       <span>이메일로 로그인하기</span>
       <form onSubmit={(e) => {submitHandler(e)}}>
         <InputForm
@@ -68,18 +68,18 @@ const SignInForm = ({logGoogle}) => {
           value={password}
         ></InputForm>
     
-        <div className='buttons-container'>
+        <Div_BtnContainer>
           <Button type='submit'>로그인</Button>
           <Button
             type='button'
             onClick={logGoogle}  
-            buttonType='google'
+            buttonType={BUTTON_TYPE.google}
           > 
             구글로 로그인하기
           </Button>
-        </div>
+        </Div_BtnContainer>
       </form>
-    </div>
+    </ Div_SignInContainer>
   )
 }
 

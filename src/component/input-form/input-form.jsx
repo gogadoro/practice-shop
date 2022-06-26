@@ -1,22 +1,19 @@
-import './input-form.scss';
+import {
+  Label_Form,
+  Input_Form,
+  Div_Group,
+} from './input-form.styles.jsx';
 
 const InputForm = ({ label, ...otherPorps }) => {
   return (
-    <div className='group'>
-      <input 
-        className='form-input' 
-        {...otherPorps}>
-      </input>
+    <Div_Group>
+      <Input_Form {...otherPorps} />
       {label && (
-        <label 
-          className={`${
-            otherPorps.value.length ? 'shrink' : null
-          } form-input-label`}
-        >
+        <Label_Form shrink={otherPorps.value.length} >
           {label}
-        </label>
+        </Label_Form>
       )}
-    </div>
+    </Div_Group>
   )
 }
 

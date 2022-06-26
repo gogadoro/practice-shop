@@ -3,8 +3,8 @@ import {createUserAuthWithEmailAndPassword,
         setUserDbFromAuth 
         } from '../../utils/firebase/firebase';
 import InputForm from '../input-form/input-form';
-import Button from '../button/button'
-import './sign-up-form.scss';
+import Button,{BUTTON_TYPE} from '../button/button'
+import {Div_SignUpContainer} from './sign-up-form.styles.jsx';
 
 const defaultFormFields = { 
         displayName : '',
@@ -52,7 +52,7 @@ const SignUpForm = () => {
 
 
     return (
-        <div className='sign-up-container'>
+        <Div_SignUpContainer>
             <h2>아직 회원이 아니시군요?</h2>
             <span>새 이메일로 회원가입하기</span>
             <form onSubmit={(form) => {submitHandler(form)}}>
@@ -92,9 +92,9 @@ const SignUpForm = () => {
                     name='confirmPassword'
                     value={confirmPassword}
                 />
-                <Button buttonType='' type='submit'>가입신청</Button>
+                <Button buttonType={BUTTON_TYPE.base} type='submit'>가입신청</Button>
             </form>
-        </div>
+        </Div_SignUpContainer>
     )
 }
 

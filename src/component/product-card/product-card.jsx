@@ -1,7 +1,14 @@
-import Button from '../button/button';
-import './product-card.scss';
+import Button, {BUTTON_TYPE} from '../button/button';
 import {useContext} from 'react';
 import { CartContext } from '../../context/cart.context';
+
+import {
+  Div_ProductContainer,
+  Div_Footer,
+  Span_Name,
+  Span_Price,
+} from './product-card.styles.jsx';
+
 
 const ProductCard = ({product}) => {
   const {name,price,imageUrl} = product;
@@ -12,14 +19,18 @@ const ProductCard = ({product}) => {
   }
 
   return (
-    <div className='product-card-container'>
+    <Div_ProductContainer>
       <img src={imageUrl} alt={`${name}`}/>
-      <div className='footer'>
-        <span className='name'>{name}</span>
-        <span className='price'>{price}</span>
-      </div>
-      <Button onClick={addItemToCart} buttonType='inverted'>카트에 담기</Button>
-    </div>
+      <Div_Footer>
+        <Span_Name>{name}</Span_Name>
+        <Span_Price>{price}</Span_Price>
+      </Div_Footer>
+      <Button 
+        onClick={addItemToCart} 
+        buttonType={BUTTON_TYPE.inverted}
+      > 카트에 담기
+      </Button>
+    </Div_ProductContainer>
   )
 }
 

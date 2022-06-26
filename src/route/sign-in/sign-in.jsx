@@ -1,10 +1,9 @@
 import SignUpForm from '../../component/sign-up-form/sign-up-form';
 import SignInForm from '../../component/sign-in-form/sign-in-form';
-import './sign-in.scss';
+import {Div_AuthContainer} from './sign-in.styles.jsx';
 
 import {
     signIn_GooglePopup,
-    setUserDbFromAuth,
 } from "../../utils/firebase/firebase";
 
 
@@ -16,10 +15,10 @@ const SignIn = () => {
 
 
     return (
-        <div className='authentication-container'>
+        <Div_AuthContainer>
             <SignInForm logGoogle={logUser_Google} />
             <SignUpForm />
-        </div>
+        </Div_AuthContainer>
     )
 }
 

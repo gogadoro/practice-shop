@@ -5,11 +5,16 @@ import { CartContext } from '../../context/cart.context';
 import { signOutUser } from '../../utils/firebase/firebase';
 
 import CartIcon from '../../component/cart-icon/cart-icon';
+import { ReactComponent as CrwnLogo } from '../../assets/crown.svg';
 import CartDropdown from '../../component/cart-dropdown/cart-dropdown.jsx';
 
-import { ReactComponent as CrwnLogo } from '../../assets/crown.svg';
 
-import './navigator.scss'
+import {
+    Div_Navigation,
+    Link_LogoContainer,
+    Div_LinksContainer,
+    Link_NavLink,
+} from './navigator.styles.jsx'
 
 
 const Navigator = () => {
@@ -22,25 +27,25 @@ const Navigator = () => {
 
     return (
         <Fragment>
-            <div className='navigation'>
-                <Link className='logo-container' to='/'>
+            <Div_Navigation>
+                <Link_LogoContainer to='/'>
                     < CrwnLogo className='logo' />
-                </Link>
-                <div className='nav-links-container'>
-                    <Link className='nav-link' to='/shop'>
+                </Link_LogoContainer>
+                <Div_LinksContainer>
+                    <Link_NavLink to='/shop'>
                         SHOP
-                    </Link>
+                    </Link_NavLink>
                     {currentUser ? (
-                        <span className='nav-link' onClick={signOutHanlder}>로그아웃</span>
+                        <Link_NavLink as='span' onClick={signOutHanlder}>로그아웃</Link_NavLink>
                     ) : (
-                        <Link className='nav-link' to='/sign-in'>
+                        <Link_NavLink to='/sign-in'>
                             로그인
-                        </Link>
+                        </Link_NavLink>
                     )}
                     <CartIcon />
-                </div>
+                </Div_LinksContainer>
                 {isOpenCart && <CartDropdown />}
-            </div>
+            </Div_Navigation>
             <Outlet />
         </Fragment>
     )
