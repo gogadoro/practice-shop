@@ -59,19 +59,17 @@ export const getCategoriesAndDocuments = async () => {
     const q = query(collectionRef)
 
     const querySnapshot = await getDocs(q)
-    const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot) => {
-        const { title, items } = docSnapshot.data()
-        acc[title.toLowerCase()] = items;
-        return acc
-    }, {})
-
-    return categoryMap
+    return querySnapshot.docs.map((docSnapshot) => docSnapshot.data())
 }
 
-export const setUserDbFromAuth = async (userAuth, additionalInfor={}) => {
+export const setUserDbFromAuth = async (
+    userAuth,
+    additionalInfor={}
+) => {
     if (!userAuth) return;
 
     const userDocRef = doc(db, 'users', userAuth.uid);
+
     const userSnapshot = await getDoc(userDocRef)
 
     if (!userSnapshot.exists()) {
@@ -94,7 +92,7 @@ export const setUserDbFromAuth = async (userAuth, additionalInfor={}) => {
         }
     }
 
-    return userDocRef;
+    return userSnapshot;
 }
 
 export const createUserAuthWithEmailAndPassword = async (email, password) => {
@@ -107,16 +105,25 @@ export const createUserAuthWithEmailAndPassword = async (email, password) => {
 }
 
 export const signInUserAuthWithEmailAndPassword = async (email, password) => {
-    if (!email | !password) {
-        console.log('이메일,암호가 전달되지 않음');
-        return;
-    }
+    if (!email | !password) return
 
-    return await signInWithEmailAndPassword(auth, email, password);
+    return await signInWithEmailAndPassword(auth, email, password)
 }
 
 export const signOutUser = async() => await signOut(auth);
 
 export const onAuthStateChangedListener = (callback) => {
     onAuthStateChanged(auth, callback);
+}
+
+export const getCurrentUser = () => {
+    return new Promise((resolve, reject) => {
+        const unsubscribe = onAuthStateChanged(
+            auth,
+            (userAuth) => { 
+                unsubscribe(); 
+                resolve(userAuth);}, 
+            reject
+            );
+    });
 }

@@ -1,10 +1,12 @@
 import {useState} from 'react';
+import { useDispatch } from 'react-redux';
+
 import {createUserAuthWithEmailAndPassword,
-        setUserDbFromAuth 
-        } from '../../utils/firebase/firebase';
+        setUserDbFromAuth } from '../../utils/firebase/firebase';
 import InputForm from '../input-form/input-form';
 import Button,{BUTTON_TYPE} from '../button/button'
 import {Div_SignUpContainer} from './sign-up-form.styles.jsx';
+import {signUpStart} from '../../store/user/user.action'
 
 const defaultFormFields = { 
         displayName : '',
@@ -14,6 +16,7 @@ const defaultFormFields = {
     }
 
 const SignUpForm = () => {
+    const dispatch = useDispatch()
     const [getUserState, setUserState] = useState(defaultFormFields);
     const {displayName, email, password, confirmPassword} = getUserState;
 
@@ -25,6 +28,10 @@ const SignUpForm = () => {
         // ***이부분 복습필요
     }
 
+    const resetFormfields = () => {
+        setUserState(defaultFormFields)
+    }
+
     const submitHandler = async (event) => {
         event.preventDefault();
 
@@ -33,13 +40,16 @@ const SignUpForm = () => {
             return;
         }
 
+        // 이부분 수정
         try {
-            const {user} = await createUserAuthWithEmailAndPassword(
-                email, 
-                password
-            );
+            dispatch(signUpStart(email, password, displayName))
+            resetFormfields()
+            // const {user} = await createUserAuthWithEmailAndPassword(
+            //     email, 
+            //     password
+            // );
 
-            await setUserDbFromAuth(user, {displayName})
+            // await setUserDbFromAuth(user, {displayName})
 
         } catch (err) {
             if(err.code === 'auth/email-already-in-use') {

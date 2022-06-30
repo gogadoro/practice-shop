@@ -9,14 +9,10 @@ import {
 
 const SignIn = () => {
 
-    const logUser_Google = async () => {
-        await signIn_GooglePopup();
-    }
-
 
     return (
         <Div_AuthContainer>
-            <SignInForm logGoogle={logUser_Google} />
+            <SignInForm />
             <SignUpForm />
         </Div_AuthContainer>
     )

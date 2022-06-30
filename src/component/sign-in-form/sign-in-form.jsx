@@ -3,7 +3,11 @@ import {signInUserAuthWithEmailAndPassword} from '../../utils/firebase/firebase'
 import InputForm from '../input-form/input-form';
 import Button, {BUTTON_TYPE} from '../button/button';
 import {Div_BtnContainer, Div_SignInContainer} from './sign-in-form.styles.jsx'
-
+import { useDispatch } from 'react-redux';
+import { 
+  signInGoogleStart,
+  signInEmailStart,
+} from '../../store/user/user.action'
 
 
 const defaultFormFields = { 
@@ -11,9 +15,14 @@ const defaultFormFields = {
   password : '',
 }
 
-const SignInForm = ({logGoogle}) => {
+const SignInForm = () => {
+  const dispatch = useDispatch()
   const [getStateUser, setStateUser] = useState(defaultFormFields);
   const {email, password} = getStateUser;
+
+  const logUser_Google = async () => {
+    dispatch(signInGoogleStart())
+}
 
   const changeHandler = (event) => {
     const name = event.target.name
@@ -23,13 +32,8 @@ const SignInForm = ({logGoogle}) => {
 
   const submitHandler = async (event) => {
     event.preventDefault();
-    
     try {
-
-      const {user} = await signInUserAuthWithEmailAndPassword(
-        email, 
-        password
-      );
+      dispatch(signInEmailStart(email, password))
 
     } catch (err) {
 
@@ -72,7 +76,7 @@ const SignInForm = ({logGoogle}) => {
           <Button type='submit'>로그인</Button>
           <Button
             type='button'
-            onClick={logGoogle}  
+            onClick={logUser_Google}  
             buttonType={BUTTON_TYPE.google}
           > 
             구글로 로그인하기
